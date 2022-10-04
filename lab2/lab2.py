@@ -1,4 +1,3 @@
-from turtle import color
 import matplotlib.pyplot as plt
 import math
 import numpy
@@ -9,24 +8,23 @@ import FrequencyDemodulator
 import random
 from scipy.fft import fft
 
+# Входные данные
 
-#Входные данные
-
-#Наш варик !!!
+# Наш варик !!!
 data = [0, 1, 1, 1, 1, 1, 0, 1]
 Pd = 0.39
 Fd = 0.37
 
-#Пример
+# Пример
 # data = [0, 1, 0, 1, 1, 1, 0, 1]
 # Pd = 0.3
 # Fd = 0.35
 
 dataLng = len(data)
-N = 2**7
-fsin = 10**3
-Wd = 10**3
-Td = math.pi/2
+N = 2 ** 7
+fsin = 10 ** 3
+Wd = 10 ** 3
+Td = math.pi / 2
 K = N * dataLng
 k = numpy.arange(0, K)
 Tsign = dataLng / K
@@ -45,9 +43,9 @@ for l in data:
 
 ok = []
 for i in k:
-    ok.append(A * math.sin(fsin*math.pi*i*C))
+    ok.append(A * math.sin(fsin * math.pi * i * C))
 
-s = PhaseManipulation.phase(data,A,fsin,k,C,N)
+s = PhaseManipulation.phase(data, A, fsin, k, C, N)
 
 plt.figure()
 
@@ -65,7 +63,7 @@ plt.plot(abs(s)[:100])
 plt.title('Спектр фазовой манипуляции')
 plt.grid(True)
 
-#____________________________________________________________
+# ____________________________________________________________
 s = FrequencyModulation.frequency(data, A, fsin, k, C, N, Wd)
 
 plt.subplot(413)
@@ -82,16 +80,16 @@ plt.title('Спектр частотной манипуляции')
 plt.grid(True)
 plt.show()
 
-#____________________________________________________________
+# ____________________________________________________________
 plt.figure('2')
 
-s = PhaseManipulation.phase(data,A,fsin,k,C,N)
+s = PhaseManipulation.phase(data, A, fsin, k, C, N)
 
-L1 = [A * math.sin(fsin*math.pi*i*C) for i in k]
-L2 = [A * math.cos(fsin*math.pi*i*C) for i in k]
+L1 = [A * math.sin(fsin * math.pi * i * C) for i in k]
+L2 = [A * math.cos(fsin * math.pi * i * C) for i in k]
 
-sb1 = PhaseDemodulator.pd(s,L1,K,N,Pd)
-sb2 = PhaseDemodulator.pd(s,L2,K,N,Pd)
+sb1 = PhaseDemodulator.pd(s, L1, K, N, Pd)
+sb2 = PhaseDemodulator.pd(s, L2, K, N, Pd)
 
 plt.subplot(511)
 plt.step([i for i in range(dataLng)], sb1[1], where='post')
@@ -103,12 +101,11 @@ plt.step([i for i in range(dataLng)], sb2[1], where='post')
 plt.title('Демодулированный сигнал')
 plt.grid(True)
 
+ss = [i + random.uniform(0, 0.5) - random.uniform(0, 0.5) for i in s]
+sb1 = PhaseDemodulator.pd(ss, L1, K, N, Pd)
+sb2 = PhaseDemodulator.pd(ss, L2, K, N, Pd)
 
-ss = [i + random.uniform(0,0.5) - random.uniform(0,0.5) for i in s]
-sb1 = PhaseDemodulator.pd(ss,L1,K,N,Pd)
-sb2 = PhaseDemodulator.pd(ss,L2,K,N,Pd)
-
-s = PhaseManipulation.phase(data,A,fsin,k,C,N)
+s = PhaseManipulation.phase(data, A, fsin, k, C, N)
 plt.subplot(513)
 plt.plot(ok, 'r--')
 plt.plot(s)
@@ -128,9 +125,8 @@ plt.step([i for i in range(dataLng)], sb2[1], where='post')
 plt.title('Демодулированный сигнал с помехами')
 plt.grid(True)
 
-
 plt.show()
-#____________________________________________________________
+# ____________________________________________________________
 
 s = FrequencyModulation.frequency(data, A, fsin, k, C, N, Wd)
 
@@ -147,7 +143,7 @@ plt.step([i for i in range(dataLng)], sb[1], where='post')
 plt.title('Демодулированный сигнал')
 plt.grid(True)
 
-ss = [i + random.uniform(0,0.5) - random.uniform(0,0.5) for i in s]
+ss = [i + random.uniform(0, 0.5) - random.uniform(0, 0.5) for i in s]
 
 plt.figure('3')
 plt.subplot(413)
@@ -156,13 +152,10 @@ plt.plot(final, alpha=0.5)
 plt.title('Частотная манипуляция с помехами')
 plt.grid(True)
 
-sb = FrequencyDemodulator.fd(ss,K,N,Fd)
+sb = FrequencyDemodulator.fd(ss, K, N, Fd)
 plt.subplot(414)
 plt.step([i for i in range(dataLng)], sb[1], where='post')
 plt.title('Демодулированный сигнал с помехами')
 plt.grid(True)
-
-
-
 
 plt.show()
