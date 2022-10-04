@@ -104,6 +104,8 @@ plt.grid(True)
 ss = [i + random.uniform(0, 0.5) - random.uniform(0, 0.5) for i in s]
 sb1 = PhaseDemodulator.pd(ss, L1, K, N, Pd)
 sb2 = PhaseDemodulator.pd(ss, L2, K, N, Pd)
+print(sb1)
+print(sb2)
 
 s = PhaseManipulation.phase(data, A, fsin, k, C, N)
 plt.subplot(513)
@@ -131,6 +133,7 @@ plt.show()
 s = FrequencyModulation.frequency(data, A, fsin, k, C, N, Wd)
 
 sb = FrequencyDemodulator.fd(s, K, N, Fd)
+
 plt.figure('3')
 plt.subplot(411)
 plt.plot(s)
