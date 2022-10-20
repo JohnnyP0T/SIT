@@ -192,3 +192,4 @@ Scripts/pythonw.exe
 Scripts/ttx.exe
 share/man/man1/ttx.1
 pyvenv.cfg
+.vscode/launch.json
