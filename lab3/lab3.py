@@ -12,7 +12,6 @@ import GetPackage
 N = 128
 k = 8
 i = range(0,N)
-
 x = []
 for index in i:
     x.append(math.floor(random.uniform(0, 2)))
