@@ -50,18 +50,16 @@ def filtr(sms, T, w, lamw, lam):
             R.append(0)
     R = ifft(R)
     for i in range(len(R)):
-        R[i] = (R[i].real)
+        R[i] = (R[i].real * 100) 
     return R
 
 def tdecomposition(s, T, lamT, lam, c, n):
-    k = 0
     KX = []
     KY = []
     for i in numpy.arange(T/lam):
         if math.floor((i*lam)/(lamT)) % c == n:
             KX.append(i*lam)
             KY.append(s[int(i)]*lam)
-            k = k + 1
     R = []
     for i in numpy.arange(T/lam):
         R.append(numpy.interp( int(i)*lam, KX, KY ) * 100)

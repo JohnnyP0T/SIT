@@ -153,37 +153,49 @@ plt.grid(True)
 
 plt.figure()
 
+
 sumsigfunc = lambda t, lamt, s: s[math.floor(t/lamt) % 2](t)
-sumsig = [sumsigfunc(counter, lam, [s1,s2]) for counter in numpy.arange(0, T, lam)]
+sumsig = [sumsigfunc(counter, lamT, [s1,s2]) for counter in numpy.arange(0, T, lam)]
+sumsig = codelab.filtr(sumsig, T, w1, lamw, lam)
 
 plt.subplot(511)
 plt.plot(sumsig)
 plt.title('Суммарный сигнал, без высокочастотных составляющих')
 plt.grid(True)
 
+signal1 = codelab.tdecomposition(sumsig,T,lamT,lam,2,0)
+signal2 = codelab.tdecomposition(sumsig,T,lamT,lam,2,1)
+
+signal11 = [i + 0.5 for i in signal1]
+signal22 = [i + 0.5 for i in signal2]
+
 plt.subplot(512)
-plt.plot(codelab.tdecomposition(sumsig,T,lamT,lam,2,0))
+plt.plot(signal11)
+plt.plot(sig1, alpha=0.5, color='r')
 plt.title('Принятые сигналы')
 plt.grid(True)
 
 plt.subplot(513)
-plt.plot(codelab.tdecomposition(sumsig,T,lamT,lam,2,1))
+plt.plot(sig2, alpha=0.5, color='r')
+plt.plot(signal22)
 plt.grid(True)
 
-signal1 = codelab.tdecomposition(sumsig,T,lamT,lam,2,0)
-signal2 = codelab.tdecomposition(sumsig,T,lamT,lam,2,1)
+decompositionsig1 = codelab.filtr(signal1, T, 0.1, lamw, lam)
+decompositionsig2 = codelab.filtr(signal2, T, 0.1, lamw, lam)
 
-decompositionsig1 = codelab.filtr(signal1, T, 0.00000000001, lamw, lam)
-decompositionsig2 = codelab.filtr(signal2, T, 0.00000000001, lamw, lam)
+decompositionsig11 = [i + 0.5 for i in decompositionsig1]
+decompositionsig22 = [i + 0.5 for i in decompositionsig2]
+
+
 plt.subplot(514)
-plt.plot(decompositionsig1)
-#plt.plot(sig1, alpha=0.5, color='r')
+plt.plot(decompositionsig11)
+plt.plot(sig1, alpha=0.5, color='r')
 plt.title('Принятые сигналы, пропущенные через фильтр низких частот')
 plt.grid(True)
 
 plt.subplot(515)
-plt.plot(decompositionsig2)
-#plt.plot(sig2, alpha=0.5, color='r')
+plt.plot(decompositionsig22)
+plt.plot(sig2, alpha=0.5, color='r')
 plt.grid(True)
 
 plt.show()
